@@ -139,7 +139,7 @@ namespace RestaurantsReservation.Controllers
             return Ok(reservationToReturn);
             
         }
-
+        // Test
         private static bool CanCancel(ReservationSchedule reservation)
         {
             DateOnly todayDate = DateOnly.FromDateTime(DateTime.UtcNow);
