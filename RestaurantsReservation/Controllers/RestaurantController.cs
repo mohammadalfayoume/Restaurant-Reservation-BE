@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantsReservation.DTOs.RestaurantDtos;
 using RestaurantsReservation.DTOs.RestaurantTableDtos;
@@ -26,6 +28,7 @@ public class RestaurantController : ControllerBase
         _restaurantTableRepo = restaurantTableRepo;
         _mapper = mapper;
     }
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll()
     {
@@ -33,6 +36,7 @@ public class RestaurantController : ControllerBase
         var restaurantsDto = _mapper.Map<IEnumerable<RestaurantDto>>(restaurants);
         return Ok(restaurantsDto);
     }
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
     [HttpGet("{id}")]
     public async Task<ActionResult<RestaurantDto>> GetRestaurantById(int id)
     {
@@ -41,6 +45,7 @@ public class RestaurantController : ControllerBase
         var restaurantDto = _mapper.Map<RestaurantDto>(restaurant);
         return Ok(restaurantDto);
     }
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
     [HttpGet("search")]
     public async Task<ActionResult<RestaurantDto>> GetRestaurant(string name)
     {
@@ -48,6 +53,7 @@ public class RestaurantController : ControllerBase
         var restaurantsToReturn = _mapper.Map<IEnumerable<RestaurantDto>>(restaurants);
         return Ok(restaurantsToReturn);
     }
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
     [HttpGet("{id}/tables")]
     public async Task<ActionResult<IEnumerable<RestaurantTableDto>>> GetAllRestaurnatTables(int id)
     {

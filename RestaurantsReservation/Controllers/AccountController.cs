@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using RestaurantsReservation.DTOs.AccountDto;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace RestaurantsReservation.Controllers;
 
@@ -68,7 +69,7 @@ public class AccountController : ControllerBase
     {
         var user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.UserName);
 
-        if (user is null) return Unauthorized("Invalid Email");
+        if (user is null) return Unauthorized("Invalid UserName");
 
         var result = await _signInManager.PasswordSignInAsync(
                loginDto.UserName,
@@ -99,7 +100,7 @@ public class AccountController : ControllerBase
 
     }
 
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost("logout")]
     public async Task<ActionResult> Logout()
     {

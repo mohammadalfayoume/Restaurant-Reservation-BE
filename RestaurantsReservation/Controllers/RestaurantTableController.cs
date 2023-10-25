@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantsReservation.DTOs.ReservationDtos;
 using RestaurantsReservation.DTOs.RestaurantTableDtos;
@@ -8,6 +10,7 @@ using System.Security.Claims;
 
 namespace RestaurantsReservation.Controllers;
 
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
 [Route("api/restaurantTables")]
 [ApiController]
 public class RestaurantTableController : ControllerBase

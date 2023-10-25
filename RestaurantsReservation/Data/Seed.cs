@@ -64,10 +64,10 @@ public class Seed
             FirstName = "Mohammad",
             LastName = "Alfayoume",
             UserName = "admin",
-            Email = "admin@alfayoume.com",
+            Email = "admin@admin.com",
             Created = DateTime.UtcNow
         };
         await userManager.CreateAsync(admin, "Pa$$w0rd");
-        await userManager.AddToRolesAsync(admin, new[] {"Admin", "User"});
+        await userManager.AddToRoleAsync(admin, "Admin");
     }
 }

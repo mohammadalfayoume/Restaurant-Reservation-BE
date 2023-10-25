@@ -18,5 +18,4 @@ public class Restaurant
     public string? CreatedBy { get; set; }
     public string? UpdatedBy { get; set; }
     public ICollection<RestaurantTable> Tables { get; set; } = new List<RestaurantTable>();
-    // public ICollection<ReservationSchedule> Reservations { get; set; } = new List<ReservationSchedule>();
 }
