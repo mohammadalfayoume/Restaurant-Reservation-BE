@@ -1,5 +1,7 @@
 ﻿# Restaurant Reservation
 ## Author: Mohammad Alfayoume
+## Technologies: Asp.Net Core
+## Design Patterns: Dependency Injection Pattern, Repository Pattern
 ---
 > ### Requirements
 Create a backend API for the restaurant reservations application with the following functionalities: 
