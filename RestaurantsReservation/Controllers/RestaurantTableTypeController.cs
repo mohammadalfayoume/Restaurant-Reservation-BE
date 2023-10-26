@@ -9,7 +9,7 @@ using RestaurantsReservation.Models;
 
 namespace RestaurantsReservation.Controllers;
 
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/restaurantTableTypes")]
 [ApiController]
 public class RestaurantTableTypeController : ControllerBase
@@ -25,6 +25,7 @@ public class RestaurantTableTypeController : ControllerBase
         _restaurantTableRepo = restaurantTableRepository;
         _mapper = mapper;
     }
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<RestaurantTableTypeDto>>> GetAllRestaurantTableTypes()
     {
@@ -40,6 +41,7 @@ public class RestaurantTableTypeController : ControllerBase
         var restaurantTableTypeToReturn = _mapper.Map<RestaurantTableTypeDto>(restaurantTableType);
         return Ok(restaurantTableTypeToReturn);
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<RestaurantTableTypeDto>> CreateRestaurantTableType(RestaurantTableTypeCreateDto restaurantTableTypeDto)
     {
@@ -48,6 +50,7 @@ public class RestaurantTableTypeController : ControllerBase
         var restaurantTableTypeToReturn = _mapper.Map<RestaurantTableTypeDto>(restaurantTableType);
         return Created($"/api/restaurantTableTypes/{restaurantTableType.Id}", restaurantTableTypeToReturn);
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateRestaurantTableType(RestaurantTableTypeUpdateDto restaurantTableTypeUpdateDto, int id)
     {
@@ -57,6 +60,7 @@ public class RestaurantTableTypeController : ControllerBase
         await _restaurantTableTypeRepo.UpdateAsync(res);
         return NoContent();
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteRestaurantTableType(int id)
     {
@@ -68,6 +72,7 @@ public class RestaurantTableTypeController : ControllerBase
         }
         return NoContent();
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpPost("{typeId}/Table/{tableId}")]
     public async Task<ActionResult<RestaurantTableDto>> AddTypeToTable(int typeId, int tableId)
     {

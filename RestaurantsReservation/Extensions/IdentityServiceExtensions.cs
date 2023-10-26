@@ -23,23 +23,27 @@ public static class IdentityServiceExtensions
 
             options.User.RequireUniqueEmail = true;
 
-        }).AddEntityFrameworkStores<DataBaseContext>().AddDefaultTokenProviders();
+        }).AddTokenProvider<DataProtectorTokenProvider<AppUser>>("NZWalks").AddEntityFrameworkStores<DataBaseContext>().AddDefaultTokenProviders();
 
-        var tokenKey = congig["TokenKey"];
-        var signInKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
-            {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = signInKey,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(congig["TokenKey"])),
                     ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                });
         // Add authorization policy
-        services.AddAuthorization();
+        //services.AddAuthorization(options =>
+        //{
+        //    options.AddPolicy("AdminOnly", policy =>
+        //        policy.RequireRole("Admin"));
+
+        //    options.AddPolicy("RegularUserOnly", policy =>
+        //        policy.RequireRole("User"));
+        //});
 
         return services;
     }

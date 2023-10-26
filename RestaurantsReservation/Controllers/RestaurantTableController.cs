@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace RestaurantsReservation.Controllers;
 
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/restaurantTables")]
 [ApiController]
 public class RestaurantTableController : ControllerBase
@@ -43,6 +43,7 @@ public class RestaurantTableController : ControllerBase
         var restaurantTableToReturn = _mapper.Map<RestaurantTableDto>(restaurantTable);
         return Ok(restaurantTableToReturn);
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<RestaurantTableDto>> CreateRestaurantTable(RestaurantTableCreateDto restaurantTableDto)
     {
@@ -54,6 +55,7 @@ public class RestaurantTableController : ControllerBase
         var restaurantTableToReturn= _mapper.Map<RestaurantTableDto>(restaurantTable);
         return Created($"/api/restaurantTables/{restaurantTable.Id}", restaurantTableToReturn);
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateRestaurantTable(RestaurantTableUpdateDto restaurantTableUpdateDto, int id)
     {
@@ -66,6 +68,7 @@ public class RestaurantTableController : ControllerBase
         await _restaurantTableRepo.UpdateAsync(res);
         return NoContent();
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteRestaurantTable(int id)
     {
@@ -84,6 +87,7 @@ public class RestaurantTableController : ControllerBase
         var reservationsToReturn = _mapper.Map<IEnumerable<ReservationDto>>(reservations);
         return Ok(reservationsToReturn);
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpPost("{tableId}/reservations/{reservationId}")]
     public async Task<ActionResult<RestaurantTableDto>> AddReservationToTable(int tableId, int reservationId)
     {

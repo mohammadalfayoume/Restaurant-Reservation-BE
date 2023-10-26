@@ -1,13 +1,9 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using RestaurantsReservation.Data;
 using RestaurantsReservation.Extensions;
-using RestaurantsReservation.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddIdentityService(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddIdentityService(builder.Configuration);
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // OR builder.Services.AddAutoMapper(typeof(Program));
 
@@ -19,8 +15,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-using var scope = app.Services.CreateScope();
-var services = scope.ServiceProvider;
+//using var scope = app.Services.CreateScope();
+//var services = scope.ServiceProvider;
 
 //try
 //{

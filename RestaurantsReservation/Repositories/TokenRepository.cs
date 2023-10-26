@@ -23,6 +23,7 @@ namespace RestaurantsReservation.Repositories
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
             };
             var roles = await _userManager.GetRolesAsync(user);
             claims.AddRange(roles.Select(role=> new Claim(ClaimTypes.Role, role)));

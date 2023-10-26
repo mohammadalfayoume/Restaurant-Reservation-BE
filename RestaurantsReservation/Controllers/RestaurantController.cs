@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace RestaurantsReservation.Controllers;
 
-//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles ="Admin")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/restaurants")]
 [ApiController]
 public class RestaurantController : ControllerBase
@@ -28,7 +28,6 @@ public class RestaurantController : ControllerBase
         _restaurantTableRepo = restaurantTableRepo;
         _mapper = mapper;
     }
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll()
     {
@@ -36,7 +35,6 @@ public class RestaurantController : ControllerBase
         var restaurantsDto = _mapper.Map<IEnumerable<RestaurantDto>>(restaurants);
         return Ok(restaurantsDto);
     }
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
     [HttpGet("{id}")]
     public async Task<ActionResult<RestaurantDto>> GetRestaurantById(int id)
     {
@@ -45,7 +43,6 @@ public class RestaurantController : ControllerBase
         var restaurantDto = _mapper.Map<RestaurantDto>(restaurant);
         return Ok(restaurantDto);
     }
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
     [HttpGet("search")]
     public async Task<ActionResult<RestaurantDto>> GetRestaurant(string name)
     {
@@ -53,7 +50,6 @@ public class RestaurantController : ControllerBase
         var restaurantsToReturn = _mapper.Map<IEnumerable<RestaurantDto>>(restaurants);
         return Ok(restaurantsToReturn);
     }
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
     [HttpGet("{id}/tables")]
     public async Task<ActionResult<IEnumerable<RestaurantTableDto>>> GetAllRestaurnatTables(int id)
     {
@@ -61,6 +57,7 @@ public class RestaurantController : ControllerBase
         var tablesToReturn = _mapper.Map<IEnumerable<RestaurantTableDto>>(tables);
         return Ok(tablesToReturn);
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<RestaurantDto>> CreateRestaurant(RestaurantCreateDto restaurantDto)
     {
@@ -81,6 +78,7 @@ public class RestaurantController : ControllerBase
         var resToReturn = _mapper.Map<RestaurantDto>(restaurant);
         return Created($"/api/restaurants/{restaurant.Id}", resToReturn);
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateRestaurant(RestaurantUpdateDto restaurantDto, int id)
     {
@@ -93,6 +91,7 @@ public class RestaurantController : ControllerBase
         await _restaurantRepo.UpdateAsync(res);
         return NoContent();
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteRestaurant(int id)
     {
@@ -104,6 +103,7 @@ public class RestaurantController : ControllerBase
         }
         return NoContent();
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpPost("{restaurantId}/tables/{tableId}")]
     public async Task<ActionResult<RestaurantDto>> AddTableToRestaurant(int restaurantId, int tableId)
     {

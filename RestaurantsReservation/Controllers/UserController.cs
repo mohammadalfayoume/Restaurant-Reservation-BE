@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantsReservation.DTOs.ReservationDtos;
 using RestaurantsReservation.DTOs.UserDto;
@@ -8,8 +10,10 @@ using System.Security.Claims;
 
 namespace RestaurantsReservation.Controllers;
 
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/users")]
 [ApiController]
+
 public class UserController : ControllerBase
 {
     private readonly IUserRepository _userRepo;
@@ -27,23 +31,22 @@ public class UserController : ControllerBase
         _restaurantTableRepo = restaurantTableRepo;
         _mapper = mapper;
     }
-
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AppUserDto>>> GetUsers()
     {
-        var users = await _userRepo.GetUsersAsync();
-        var usersToReturn = _mapper.Map<IEnumerable<AppUserDto>>(users);
-        return Ok(usersToReturn);
+        return Ok(await _userRepo.GetDtoUsersAsync());
+        
     }
-
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpGet("{id}")]
     public async Task<ActionResult<AppUserDto?>> GetUserById(int id)
     {
-        var user= await _userRepo.GetUserByIdAsync(id);
+        var user= await _userRepo.GetDtoUserByIdAsync(id);
         if (user is null) return NotFound();
-        var userToReturn = _mapper.Map<AppUserDto>(user);
-        return Ok(userToReturn);
+        return Ok(user);
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateUser(UpdateUserDto updatedUserDto, int id)
     {
@@ -57,6 +60,7 @@ public class UserController : ControllerBase
         await _userRepo.UpdateAsync(user);
         return NoContent();
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteUser(int id)
     {
@@ -68,6 +72,7 @@ public class UserController : ControllerBase
         }
         return NoContent();
     }
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [HttpGet("{id}/reservations")]
     public async Task<ActionResult<IEnumerable<ReservationDto>>> GetAllUserReservations(int id)
     {
@@ -75,6 +80,7 @@ public class UserController : ControllerBase
         var reservationsToReturn = _mapper.Map<IEnumerable<ReservationDto>>(reservations);
         return Ok(reservationsToReturn);
     }
+
     [HttpPost("{userId}/reservations/{reservationId}")]
     public async Task<ActionResult<AppUserDto>> ReserveRestaurantTable(int userId, int reservationId)
     {

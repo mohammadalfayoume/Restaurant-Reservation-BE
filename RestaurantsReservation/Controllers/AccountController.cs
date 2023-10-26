@@ -74,7 +74,7 @@ public class AccountController : ControllerBase
         var result = await _signInManager.PasswordSignInAsync(
                loginDto.UserName,
                loginDto.Password,
-               loginDto.RememberMe,
+               false, //loginDto.RememberMe
                false
             );
         if (!result.Succeeded)
