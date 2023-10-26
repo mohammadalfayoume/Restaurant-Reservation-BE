@@ -6,7 +6,6 @@ using RestaurantsReservation.DTOs.ReservationDtos;
 using RestaurantsReservation.DTOs.UserDto;
 using RestaurantsReservation.Interfaces;
 using RestaurantsReservation.Models;
-using System.Security.Claims;
 
 namespace RestaurantsReservation.Controllers;
 
@@ -50,7 +49,7 @@ public class UserController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateUser(UpdateUserDto updatedUserDto, int id)
     {
-        var user = await _userRepo.GetUserByIdAsync(id);
+        var user = await _userRepo.GetByIdAsync(id);
         if (user is null) return NotFound();
         user.LastUpdated= DateTime.Now;
         user.UserName = updatedUserDto.UserName is not null ? updatedUserDto.UserName : user.UserName;
@@ -64,7 +63,7 @@ public class UserController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteUser(int id)
     {
-        var user = await _userRepo.GetUserByIdAsync(id);
+        var user = await _userRepo.GetByIdAsync(id);
         if (user is not null)
         {
             user.IsDeleted = true;
@@ -84,7 +83,7 @@ public class UserController : ControllerBase
     [HttpPost("{userId}/reservations/{reservationId}")]
     public async Task<ActionResult<AppUserDto>> ReserveRestaurantTable(int userId, int reservationId)
     {
-        var user = await _userRepo.GetUserByIdAsync(userId);
+        var user = await _userRepo.GetByIdAsync(userId);
         if (user is null) return BadRequest("User Not Found");
         var reservation = await _reservationRepo.GetByIdAsync(reservationId);
         if (reservation is null) return BadRequest("Reservation Schedule Not Found");
@@ -138,7 +137,6 @@ public class UserController : ControllerBase
         if (currentReservationDate==newReseDate)
         {
             if ((newResStartAt<currentStartAt && newResEndAt<= currentStartAt) || (newResStartAt>=currentEndAt && newResEndAt>currentEndAt)) return true;
-            else return false;
         }
         return true;
 

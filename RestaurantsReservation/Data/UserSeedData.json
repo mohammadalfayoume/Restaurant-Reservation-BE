@@ -1,0 +1,44 @@
+[
+  {
+    "userName": "Deana",
+    "firstName": "Mindy",
+    "lastName": "Moses",
+    "email": "mindymoses@cosmetex.com"
+  },
+  {
+    "userName": "Fowler",
+    "firstName": "Whitehead",
+    "lastName": "Valentine",
+    "email": "whiteheadvalentine@cosmetex.com"
+  },
+  {
+    "userName": "Brandy",
+    "firstName": "Yang",
+    "lastName": "Gibbs",
+    "email": "yanggibbs@cosmetex.com"
+  },
+  {
+    "userName": "Glenda",
+    "firstName": "Holloway",
+    "lastName": "Justice",
+    "email": "hollowayjustice@cosmetex.com"
+  },
+  {
+    "userName": "Lynette",
+    "firstName": "Bolton",
+    "lastName": "Kline",
+    "email": "boltonkline@cosmetex.com"
+  },
+  {
+    "userName": "Francis",
+    "firstName": "Lourdes",
+    "lastName": "Wilkinson",
+    "email": "lourdeswilkinson@cosmetex.com"
+  },
+  {
+    "userName": "Singleton",
+    "firstName": "Judith",
+    "lastName": "Workman",
+    "email": "judithworkman@cosmetex.com"
+  }
+]

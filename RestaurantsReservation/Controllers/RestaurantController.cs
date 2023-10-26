@@ -31,14 +31,14 @@ public class RestaurantController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll()
     {
-        var restaurants = await _restaurantRepo.GetRestaurantsAsync();
+        var restaurants = await _restaurantRepo.GetAllAsync();
         var restaurantsDto = _mapper.Map<IEnumerable<RestaurantDto>>(restaurants);
         return Ok(restaurantsDto);
     }
     [HttpGet("{id}")]
     public async Task<ActionResult<RestaurantDto>> GetRestaurantById(int id)
     {
-        var restaurant =  await _restaurantRepo.GetRestaurantByIdAsync(id);
+        var restaurant =  await _restaurantRepo.GetByIdAsync(id);
         if (restaurant is null) return NotFound();
         var restaurantDto = _mapper.Map<RestaurantDto>(restaurant);
         return Ok(restaurantDto);
@@ -83,7 +83,7 @@ public class RestaurantController : ControllerBase
     public async Task<ActionResult> UpdateRestaurant(RestaurantUpdateDto restaurantDto, int id)
     {
         var username = GetUserName();
-        var restaurant = await _restaurantRepo.GetRestaurantByIdAsync(id);
+        var restaurant = await _restaurantRepo.GetByIdAsync(id);
         if (restaurant is null) return NotFound();
         var res = _mapper.Map(restaurantDto, restaurant);
         res.LastUpdated = DateTime.UtcNow;
@@ -95,7 +95,7 @@ public class RestaurantController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteRestaurant(int id)
     {
-        var restaurant = await _restaurantRepo.GetRestaurantByIdAsync(id);
+        var restaurant = await _restaurantRepo.GetByIdAsync(id);
         if (restaurant is not null)
         {
             restaurant.IsDeleted = true;
@@ -107,7 +107,7 @@ public class RestaurantController : ControllerBase
     [HttpPost("{restaurantId}/tables/{tableId}")]
     public async Task<ActionResult<RestaurantDto>> AddTableToRestaurant(int restaurantId, int tableId)
     {
-        var restaurant = await _restaurantRepo.GetRestaurantByIdAsync(restaurantId);
+        var restaurant = await _restaurantRepo.GetByIdAsync(restaurantId);
         var table = await _restaurantTableRepo.GetByIdAsync(tableId);
         if (restaurant is null || table is null) return BadRequest();
         restaurant.Tables.Add(table);

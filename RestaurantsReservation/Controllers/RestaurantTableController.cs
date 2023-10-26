@@ -31,7 +31,7 @@ public class RestaurantTableController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<RestaurantTableDto>>> GetAllRestaurantTables()
     {
-        var restaurantTables = await _restaurantTableRepo.GetTablesAsync();
+        var restaurantTables = await _restaurantTableRepo.GetAllAsync();
         var restaurantTablesToReturn = _mapper.Map<IEnumerable<RestaurantTableDto>>(restaurantTables);
         return Ok(restaurantTablesToReturn);
     }

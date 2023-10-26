@@ -23,7 +23,8 @@ namespace RestaurantsReservation.Controllers
             _reservationRepo = reservationRepo;
             _mapper = mapper;
         }
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReservationDto>>> GetAll()
         {
@@ -31,7 +32,8 @@ namespace RestaurantsReservation.Controllers
             var reservationsDto = _mapper.Map<IEnumerable<ReservationDto>>(reservations);
             return Ok(reservationsDto);
         }
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<ReservationDto>> GetById(int id)
         {
@@ -40,7 +42,8 @@ namespace RestaurantsReservation.Controllers
             var reservationDto = _mapper.Map<ReservationDto>(reservation);
             return Ok(reservationDto);
         }
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<ReservationDto>> CreateReservation(ReservationCreateDto reservationDto)
         {
@@ -66,8 +69,6 @@ namespace RestaurantsReservation.Controllers
 
             var reservation = _mapper.Map<ReservationSchedule>(reservationDto);
 
-            reservation.Created = DateTime.UtcNow;
-
             reservation.CreatedBy = username;
 
             await _reservationRepo.CreateAsync(reservation);
@@ -76,7 +77,8 @@ namespace RestaurantsReservation.Controllers
 
             return Created($"/api/reservations/{reservation.Id}", reservationToReturn);
         }
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [AllowAnonymous]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateReservation(ReservationUpdateDto reservationUpdateDto, int id)
         {
@@ -114,7 +116,8 @@ namespace RestaurantsReservation.Controllers
             return NoContent();
 
         }
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [AllowAnonymous]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteReservation(int id)
         {

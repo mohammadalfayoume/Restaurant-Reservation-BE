@@ -3,10 +3,8 @@ using RestaurantsReservation.Models;
 
 namespace RestaurantsReservation.Interfaces;
 
-public interface IUserRepository
+public interface IUserRepository : IBaseRepository<AppUser>
 {
-    Task UpdateAsync(AppUser user);
     Task<IEnumerable<AppUserDto>> GetDtoUsersAsync();
-    Task<AppUser?> GetUserByIdAsync(int id);
     Task<AppUserDto?> GetDtoUserByIdAsync(int id);
 }

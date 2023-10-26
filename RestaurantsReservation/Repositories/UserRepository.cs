@@ -30,7 +30,7 @@ public class UserRepository : IUserRepository
     {
         return await GetDtoUsers().FirstOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
     }
-    public async Task<AppUser?> GetUserByIdAsync(int id)
+    public async Task<AppUser?> GetByIdAsync(int id)
     {
         return await GetUsers().FirstOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
     }
@@ -46,6 +46,13 @@ public class UserRepository : IUserRepository
         await _context.SaveChangesAsync();
     }
 
+    public Task<IEnumerable<AppUser>> GetAllAsync()
+    {
+        throw new NotImplementedException();
+    }
 
-    
+    public Task CreateAsync(AppUser reservation)
+    {
+        throw new NotImplementedException();
+    }
 } 

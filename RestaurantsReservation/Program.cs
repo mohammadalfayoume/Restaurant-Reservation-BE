@@ -1,4 +1,8 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using RestaurantsReservation.Data;
 using RestaurantsReservation.Extensions;
+using RestaurantsReservation.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,22 +19,22 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-//using var scope = app.Services.CreateScope();
-//var services = scope.ServiceProvider;
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
 
-//try
-//{
-//    var context = services.GetRequiredService<DataBaseContext>();
-//    var userManager = services.GetRequiredService<UserManager<AppUser>>();
-//    var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
-//    await context.Database.MigrateAsync();
-//    await Seed.SeedUsers(userManager, roleManager);
-//}
-//catch (Exception ex)
-//{
-//    var logger = services.GetRequiredService<ILogger<Program>>();
-//    logger.LogError(ex, "An error occurred during migration");
-//}
+try
+{
+    var context = services.GetRequiredService<DataBaseContext>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+    await context.Database.MigrateAsync();
+    await Seed.SeedData(userManager, roleManager);
+}
+catch (Exception ex)
+{
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occurred during migration");
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

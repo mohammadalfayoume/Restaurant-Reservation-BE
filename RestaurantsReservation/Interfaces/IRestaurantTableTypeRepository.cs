@@ -2,10 +2,6 @@
 
 namespace RestaurantsReservation.Interfaces;
 
-public interface IRestaurantTableTypeRepository
+public interface IRestaurantTableTypeRepository : IBaseRepository<RestaurantTableType>
 {
-    Task UpdateAsync(RestaurantTableType restaurantTableType);
-    Task<IEnumerable<RestaurantTableType>> GetAllAsync();
-    Task<RestaurantTableType?> GetByIdAsync(int id);
-    Task CreateAsync(RestaurantTableType restaurantTableType);
 }

@@ -24,11 +24,11 @@ public class RestaurantRepository : IRestaurantRepository
         return _context.Restaurants.Include(r=>r.Tables).AsQueryable();
     }
 
-    public async Task<Restaurant?> GetRestaurantByIdAsync(int id)
+    public async Task<Restaurant?> GetByIdAsync(int id)
     {
         return await GetRestaurants().FirstOrDefaultAsync(r=>r.Id==id && r.IsDeleted==false);
     }
-    public async Task<IEnumerable<Restaurant>> GetRestaurantsAsync()
+    public async Task<IEnumerable<Restaurant>> GetAllAsync()
     {
         return await GetRestaurants().AsNoTracking().Where(res=>res.IsDeleted==false).ToListAsync(); 
     }
