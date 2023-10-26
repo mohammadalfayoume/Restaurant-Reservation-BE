@@ -27,7 +27,7 @@ public class RestaurantTableTypeRepository : IRestaurantTableTypeRepository
         return await GetRestaurantTableTypes().AsNoTracking().Where(rt => rt.IsDeleted == false).ToListAsync();
     }
 
-    public async Task<RestaurantTableType?> GetByIdAsync(int id)
+    public async Task<RestaurantTableType> GetByIdAsync(int id)
     {
         return await GetRestaurantTableTypes().FirstOrDefaultAsync(rtt => rtt.Id == id && rtt.IsDeleted==false);
     }

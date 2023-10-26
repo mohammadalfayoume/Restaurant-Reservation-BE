@@ -28,7 +28,7 @@ namespace RestaurantsReservation.Repositories
             return await GetReservations().AsNoTracking().Where(res => res.IsDeleted == false).ToListAsync();
         }
 
-        public async Task<ReservationSchedule?> GetByIdAsync(int id)
+        public async Task<ReservationSchedule> GetByIdAsync(int id)
         {
             return await GetReservations().FirstOrDefaultAsync(r => r.Id == id && r.IsDeleted == false);
         }

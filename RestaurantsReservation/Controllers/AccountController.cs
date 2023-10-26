@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using RestaurantsReservation.Interfaces;
 using RestaurantsReservation.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using RestaurantsReservation.DTOs.AccountDto;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using RestaurantsReservation.Helpers;
 
 namespace RestaurantsReservation.Controllers;
 
@@ -40,7 +40,7 @@ public class AccountController : ControllerBase
 
             var user = _mapper.Map<AppUser>(registerDto);
             user.Email = registerDto.Email.ToLower();
-            if (!IsValidEmail(registerDto.Email))
+            if (!Validations.IsValidEmail(registerDto.Email))
             {
                 return BadRequest("Invalid Email");
             }
@@ -107,19 +107,10 @@ public class AccountController : ControllerBase
         await _signInManager.SignOutAsync();
         return Ok("Logged out successfully");
     }
-
     // Method to check if user exist
     private async Task<bool> UserExists(string email)
     {
-        return await _userManager.Users.AnyAsync(user=>user.Email == email.ToLower());
-    }
-
-    // Method to validate email address using regular expression
-    private bool IsValidEmail(string email)
-    {
-        string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-        Regex regex = new Regex(emailPattern);
-        return regex.IsMatch(email);
+        return await _userManager.Users.AnyAsync(user => user.Email == email.ToLower());
     }
 
 }

@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantsReservation.DTOs.ReservationDtos;
 using RestaurantsReservation.DTOs.UserDto;
+using RestaurantsReservation.Helpers;
 using RestaurantsReservation.Interfaces;
-using RestaurantsReservation.Models;
 
 namespace RestaurantsReservation.Controllers;
 
@@ -17,17 +17,14 @@ public class UserController : ControllerBase
 {
     private readonly IUserRepository _userRepo;
     private readonly IReservationRepository _reservationRepo;
-    private readonly IRestaurantTableRepository _restaurantTableRepo;
     private readonly IMapper _mapper;
 
     public UserController(IUserRepository userRepo,
         IReservationRepository reservationRepo,
-        IRestaurantTableRepository restaurantTableRepo,
         IMapper mapper) 
     {
         _userRepo = userRepo;
         _reservationRepo = reservationRepo;
-        _restaurantTableRepo = restaurantTableRepo;
         _mapper = mapper;
     }
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
@@ -90,13 +87,13 @@ public class UserController : ControllerBase
         if (reservation.IsReserved && !reservation.IsCanceled) return BadRequest("This Table Already Reserved");
 
         // Check if reservation dateTime is before today
-        bool isOldDate = IsOldDate(reservation);
+        bool isOldDate = Validations.IsOldDate(reservation);
 
         if (isOldDate) return BadRequest("Reservation Date Invalid");
 
         foreach (var res in user.Reservations)
         {
-            bool isValid = IsValidReservation(res, reservation.ReservationDate,
+            bool isValid = Validations.IsValidReservation(res, reservation.ReservationDate,
                  reservation.StartAt, reservation.EndAt);
             if (!isValid) return BadRequest("Conflict Found");
         }
@@ -109,37 +106,6 @@ public class UserController : ControllerBase
         
     }
 
-    private static bool IsOldDate(ReservationSchedule reservationSchedule)
-    {
-        DateOnly todayDate = DateOnly.FromDateTime(DateTime.UtcNow);
-        TimeOnly todayTime = TimeOnly.FromDateTime(DateTime.UtcNow);
-
-        var currentReservationDate = DateOnly.Parse(reservationSchedule.ReservationDate);
-        var currentStartAt = TimeOnly.Parse(reservationSchedule.StartAt);
-        if (currentReservationDate<todayDate) return true;
-
-        else if (currentReservationDate==todayDate && currentStartAt < todayTime) return true;
-
-        return false;
-    }
-
-    private static bool IsValidReservation(ReservationSchedule reservationSchedule, string newReservationDate, string newStartAt, string newEndAt)
-    {
-        
-        var currentReservationDate = DateOnly.Parse(reservationSchedule.ReservationDate);
-        var currentStartAt = TimeOnly.Parse(reservationSchedule.StartAt);
-        var currentEndAt = TimeOnly.Parse(reservationSchedule.EndAt);
-
-        var newReseDate = DateOnly.Parse(newReservationDate);
-        var newResStartAt = TimeOnly.Parse(newStartAt);
-        var newResEndAt = TimeOnly.Parse(newEndAt);
-
-        if (currentReservationDate==newReseDate)
-        {
-            if ((newResStartAt<currentStartAt && newResEndAt<= currentStartAt) || (newResStartAt>=currentEndAt && newResEndAt>currentEndAt)) return true;
-        }
-        return true;
-
-    }
+    
     
 }

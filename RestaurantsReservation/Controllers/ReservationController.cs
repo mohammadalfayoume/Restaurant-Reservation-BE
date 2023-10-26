@@ -23,7 +23,7 @@ namespace RestaurantsReservation.Controllers
             _reservationRepo = reservationRepo;
             _mapper = mapper;
         }
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReservationDto>>> GetAll()
@@ -32,7 +32,7 @@ namespace RestaurantsReservation.Controllers
             var reservationsDto = _mapper.Map<IEnumerable<ReservationDto>>(reservations);
             return Ok(reservationsDto);
         }
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<ReservationDto>> GetById(int id)
@@ -42,24 +42,24 @@ namespace RestaurantsReservation.Controllers
             var reservationDto = _mapper.Map<ReservationDto>(reservation);
             return Ok(reservationDto);
         }
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<ReservationDto>> CreateReservation(ReservationCreateDto reservationDto)
         {
 
-            ValidationDateTime.IsValidDate(reservationDto.ReservationDate, out bool isValidDate, out DateOnly reservationDate);
+            Validations.IsValidDate(reservationDto.ReservationDate, out bool isValidDate, out DateOnly reservationDate);
 
             if (!isValidDate) return BadRequest("Invalid Date Format");
 
             var todayDate = DateOnly.FromDateTime(DateTime.UtcNow);
             if (todayDate>reservationDate) return BadRequest("Invalid Date");
 
-            ValidationDateTime.IsValidTime(reservationDto.StartAt, out bool isValidStartTime, out TimeOnly startTime);
+            Validations.IsValidTime(reservationDto.StartAt, out bool isValidStartTime, out TimeOnly startTime);
 
             if (!isValidStartTime) return BadRequest("Invalid Start Time Format");
 
-            ValidationDateTime.IsValidTime(reservationDto.EndAt, out bool isValidEndTime, out TimeOnly endTime);
+            Validations.IsValidTime(reservationDto.EndAt, out bool isValidEndTime, out TimeOnly endTime);
 
             if (!isValidEndTime) return BadRequest("Invalid End Time Format");
 
@@ -77,7 +77,7 @@ namespace RestaurantsReservation.Controllers
 
             return Created($"/api/reservations/{reservation.Id}", reservationToReturn);
         }
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [AllowAnonymous]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateReservation(ReservationUpdateDto reservationUpdateDto, int id)
@@ -86,18 +86,18 @@ namespace RestaurantsReservation.Controllers
 
             if (reservation is null) return NotFound();
 
-            ValidationDateTime.IsValidDate(reservationUpdateDto.ReservationDate, out bool isValidDate, out DateOnly reservationDate);
+            Validations.IsValidDate(reservationUpdateDto.ReservationDate, out bool isValidDate, out DateOnly reservationDate);
 
             if (!isValidDate) return BadRequest("Invalid Date Format");
 
             var todayDate = DateOnly.FromDateTime(DateTime.UtcNow);
             if (todayDate > reservationDate) return BadRequest("Invalid Date");
 
-            ValidationDateTime.IsValidTime(reservationUpdateDto.StartAt, out bool isValidStartTime, out TimeOnly startTime);
+            Validations.IsValidTime(reservationUpdateDto.StartAt, out bool isValidStartTime, out TimeOnly startTime);
 
             if (!isValidStartTime) return BadRequest("Invalid Start Time Format");
 
-            ValidationDateTime.IsValidTime(reservationUpdateDto.EndAt, out bool isValidEndTime, out TimeOnly endTime);
+            Validations.IsValidTime(reservationUpdateDto.EndAt, out bool isValidEndTime, out TimeOnly endTime);
 
             if (!isValidEndTime) return BadRequest("Invalid End Time Format");
 
@@ -116,7 +116,7 @@ namespace RestaurantsReservation.Controllers
             return NoContent();
 
         }
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [AllowAnonymous]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteReservation(int id)
@@ -136,7 +136,7 @@ namespace RestaurantsReservation.Controllers
             var reservation = await _reservationRepo.GetByIdAsync(id);
             if (reservation is null) return BadRequest();
             if (reservation.IsCanceled) return BadRequest("Already Reservation Canceled");
-            bool canCancel = CanCancel(reservation);
+            bool canCancel = Validations.CanCancel(reservation);
             if (!canCancel)
                 return BadRequest("Cannot Cancel The Reservation. You just can cancel before 2 hours of reservation start time");
 
@@ -150,16 +150,7 @@ namespace RestaurantsReservation.Controllers
             return Ok(reservationToReturn);
             
         }
-        private static bool CanCancel(ReservationSchedule reservation)
-        {
-            DateOnly todayDate = DateOnly.FromDateTime(DateTime.UtcNow);
-            TimeOnly todayTime = TimeOnly.FromDateTime(DateTime.UtcNow);
-            var reservationDate = DateOnly.Parse(reservation.ReservationDate);
-            var startAt = TimeOnly.Parse(reservation.StartAt);
-            if (todayDate == reservationDate && startAt < todayTime.AddHours(2))
-                return false;
-            return true;
-        }
+        
 
         private string? GetUserName()
         {

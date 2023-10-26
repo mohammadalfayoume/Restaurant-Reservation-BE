@@ -23,7 +23,7 @@ public class RestaurantTableRepository : IRestaurantTableRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<RestaurantTable?> GetByIdAsync(int id)
+    public async Task<RestaurantTable> GetByIdAsync(int id)
     {
         return await GetRestaurantTables().FirstOrDefaultAsync(rt => rt.Id == id && rt.IsDeleted == false);
     }

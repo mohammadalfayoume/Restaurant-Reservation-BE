@@ -61,10 +61,10 @@ public class RestaurantController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<RestaurantDto>> CreateRestaurant(RestaurantCreateDto restaurantDto)
     {
-        ValidationDateTime.IsValidTime(restaurantDto.OpenAt, out bool isValidStartTime, out TimeOnly startTime);
+        Validations.IsValidTime(restaurantDto.OpenAt, out bool isValidStartTime, out TimeOnly startTime);
         if (!isValidStartTime) return BadRequest("Invalid Open Time Format");
 
-        ValidationDateTime.IsValidTime(restaurantDto.CloseAt, out bool isValidEndTime, out TimeOnly endTime);
+        Validations.IsValidTime(restaurantDto.CloseAt, out bool isValidEndTime, out TimeOnly endTime);
 
         if (!isValidEndTime) return BadRequest("Invalid Close Time Format");
 
