@@ -1,6 +1,5 @@
 ﻿using RestaurantsReservation.DTOs.RestaurantTableDtos;
-using RestaurantsReservation.DTOs.UserDto;
-using RestaurantsReservation.Models;
+using RestaurantsReservation.DTOs.UserDtos;
 
 namespace RestaurantsReservation.DTOs.ReservationDtos
 {

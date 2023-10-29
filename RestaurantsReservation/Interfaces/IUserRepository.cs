@@ -1,4 +1,4 @@
-﻿using RestaurantsReservation.DTOs.UserDto;
+﻿using RestaurantsReservation.DTOs.UserDtos;
 using RestaurantsReservation.Models;
 
 namespace RestaurantsReservation.Interfaces;

@@ -49,6 +49,9 @@ Create a backend API for the restaurant reservations application with the follow
     * Get One `GET`: `api/users/:id`
     * Update `PUT`: `api/users/:id`
     * Delete `DELETE`: `api/users/:id`
+    * Add User Reservation `POST`: `api/users/:userId/reservations/:reservationId`
+    * Modify User Reservation `PUT`: `api/users/:userId/reservations/:reservationId`
+    * Cancel `POST`: `api/users/:userId/reservations/:reservationId/cancel`
 3. Restaurant
 
     * Get All `GET`: `api/restaurants`
@@ -78,7 +81,6 @@ Create a backend API for the restaurant reservations application with the follow
     * Create `POST`: `api/reservations`
     * Update `PUT`: `api/reservations/:id`
     * Delete `DELETE`: `api/reservations/:id`
-    * Cancel `POST`: `api/reservations/:id/cancel`
 7. Add TableType to Table
     * `POST`: `api/restaurantTableTypes/{typeId}/Table/{tableId}`
 8. Add Table to Restaurant

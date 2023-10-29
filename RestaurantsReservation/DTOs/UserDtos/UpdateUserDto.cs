@@ -1,4 +1,4 @@
-﻿namespace RestaurantsReservation.DTOs.UserDto;
+﻿namespace RestaurantsReservation.DTOs.UserDtos;
 
 public class UpdateUserDto
 {

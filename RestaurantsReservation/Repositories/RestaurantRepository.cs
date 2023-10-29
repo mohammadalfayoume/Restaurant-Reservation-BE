@@ -41,7 +41,7 @@ public class RestaurantRepository : IRestaurantRepository
 
     public async Task<IEnumerable<Restaurant>> GetRestaurantByNameAsync(string name)
     {
-        return await GetRestaurants().AsNoTracking().Where(e => _context.FuzzySearch(e.Name) == _context.FuzzySearch(name)).ToListAsync();
+        return await GetRestaurants().AsNoTracking().Where(e => !e.IsDeleted &&_context.FuzzySearch(e.Name) == _context.FuzzySearch(name)).ToListAsync();
     }
 
 }

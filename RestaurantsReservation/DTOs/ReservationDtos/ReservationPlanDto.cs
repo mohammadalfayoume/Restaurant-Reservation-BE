@@ -1,7 +1,4 @@
-﻿using RestaurantsReservation.DTOs.UserDto;
-using RestaurantsReservation.Models;
-
-namespace RestaurantsReservation.DTOs.ReservationDtos
+﻿namespace RestaurantsReservation.DTOs.ReservationDtos
 {
     public class ReservationPlanDto
     {

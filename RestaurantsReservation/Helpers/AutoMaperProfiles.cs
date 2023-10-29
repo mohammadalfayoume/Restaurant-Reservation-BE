@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using RestaurantsReservation.DTOs.AccountDto;
+using RestaurantsReservation.DTOs.AccountDtos;
 using RestaurantsReservation.DTOs.ReservationDtos;
 using RestaurantsReservation.DTOs.RestaurantDtos;
 using RestaurantsReservation.DTOs.RestaurantTableDtos;
 using RestaurantsReservation.DTOs.RestaurantTableTypeDtos;
-using RestaurantsReservation.DTOs.UserDto;
+using RestaurantsReservation.DTOs.UserDtos;
 using RestaurantsReservation.Models;
 
 namespace RestaurantsReservation.Helpers;

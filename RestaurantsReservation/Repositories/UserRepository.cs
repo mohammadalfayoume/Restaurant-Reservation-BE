@@ -3,7 +3,7 @@ using RestaurantsReservation.Interfaces;
 using RestaurantsReservation.Models;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
-using RestaurantsReservation.DTOs.UserDto;
+using RestaurantsReservation.DTOs.UserDtos;
 using AutoMapper;
 
 namespace RestaurantsReservation.Repositories;
@@ -30,7 +30,7 @@ public class UserRepository : IUserRepository
     {
         return await GetDtoUsers().FirstOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
     }
-    public async Task<AppUser> GetByIdAsync(int id)
+    public async Task<AppUser?> GetByIdAsync(int id)
     {
         return await GetUsers().FirstOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
     }
@@ -51,7 +51,7 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
-    public Task CreateAsync(AppUser reservation)
+    public Task CreateAsync(AppUser user)
     {
         throw new NotImplementedException();
     }

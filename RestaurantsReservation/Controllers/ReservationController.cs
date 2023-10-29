@@ -7,6 +7,7 @@ using System.Security.Claims;
 using RestaurantsReservation.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNet.Identity;
 
 namespace RestaurantsReservation.Controllers
 {
@@ -23,27 +24,30 @@ namespace RestaurantsReservation.Controllers
             _reservationRepo = reservationRepo;
             _mapper = mapper;
         }
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        [AllowAnonymous]
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReservationDto>>> GetAll()
         {
             var reservations = await _reservationRepo.GetAllAsync();
+
             var reservationsDto = _mapper.Map<IEnumerable<ReservationDto>>(reservations);
+
             return Ok(reservationsDto);
         }
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        [AllowAnonymous]
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ReservationDto>> GetById(int id)
         {
             var reservation = await _reservationRepo.GetByIdAsync(id);
+
             if (reservation is null) return NotFound();
+
             var reservationDto = _mapper.Map<ReservationDto>(reservation);
+
             return Ok(reservationDto);
         }
+
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<ReservationDto>> CreateReservation(ReservationCreateDto reservationDto)
         {
@@ -53,6 +57,7 @@ namespace RestaurantsReservation.Controllers
             if (!isValidDate) return BadRequest("Invalid Date Format");
 
             var todayDate = DateOnly.FromDateTime(DateTime.UtcNow);
+
             if (todayDate>reservationDate) return BadRequest("Invalid Date");
 
             Validations.IsValidTime(reservationDto.StartAt, out bool isValidStartTime, out TimeOnly startTime);
@@ -77,8 +82,8 @@ namespace RestaurantsReservation.Controllers
 
             return Created($"/api/reservations/{reservation.Id}", reservationToReturn);
         }
+
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        [AllowAnonymous]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateReservation(ReservationUpdateDto reservationUpdateDto, int id)
         {
@@ -122,40 +127,28 @@ namespace RestaurantsReservation.Controllers
         public async Task<ActionResult> DeleteReservation(int id)
         {
             var reservation = await _reservationRepo.GetByIdAsync(id);
-            if (reservation is not null)
-            {
-                reservation.IsDeleted = true;
-                await _reservationRepo.UpdateAsync(reservation);
-            }
+            if (reservation is null) return NoContent();
+            reservation.IsDeleted = true;
+            await _reservationRepo.UpdateAsync(reservation);
             return NoContent();
         }
-        [HttpPost("{id}/cancel")]
-        public async Task<ActionResult<ReservationDto>> CancelReservation(int id)
-        {
-            var username = GetUserName();
-            var reservation = await _reservationRepo.GetByIdAsync(id);
-            if (reservation is null) return BadRequest();
-            if (reservation.IsCanceled) return BadRequest("Already Reservation Canceled");
-            bool canCancel = Validations.CanCancel(reservation);
-            if (!canCancel)
-                return BadRequest("Cannot Cancel The Reservation. You just can cancel before 2 hours of reservation start time");
 
-
-            reservation.IsCanceled= true;
-            reservation.IsReserved = false;
-            reservation.UpdatedBy= username;
-            reservation.User = null;
-            await _reservationRepo.UpdateAsync(reservation);
-            var reservationToReturn = _mapper.Map<ReservationDto>(reservation);
-            return Ok(reservationToReturn);
-            
-        }
-        
-
+        /// <summary>
+        /// Get the username from Name claim
+        /// </summary>
+        /// <returns>String</returns>
         private string? GetUserName()
         {
-            return User.FindFirst(ClaimTypes.Name)?.Value;
+            var identity = HttpContext.User.Identity;
+
+            if (identity == null) throw new ApplicationException("Unable to retrieve the current userName from the token.");
+
+            var userNameClaim = identity.GetUserName();
+
+            if (userNameClaim is not null) return userNameClaim;
+
+            throw new ApplicationException("Unable to retrieve the current userName from the token.");
         }
-        
+
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace RestaurantsReservation.DTOs.UserDto;
+﻿using RestaurantsReservation.DTOs.ReservationDtos;
 
-public class UserPlanDto
+namespace RestaurantsReservation.DTOs.UserDtos;
+
+public class AppUserDto
 {
     public int Id { get; set; }
     public string UserName { get; set; }
@@ -10,4 +12,5 @@ public class UserPlanDto
     public bool IsDeleted { get; set; }
     public DateTime Created { get; set; }
     public DateTime? LastUpdated { get; set; }
+    public ICollection<ReservationPlanDto> Reservations { get; set; } = new List<ReservationPlanDto>();
 }

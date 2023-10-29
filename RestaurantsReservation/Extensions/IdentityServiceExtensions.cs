@@ -9,7 +9,7 @@ namespace RestaurantsReservation.Extensions;
 
 public static class IdentityServiceExtensions
 {
-    public static IServiceCollection AddIdentityService(this IServiceCollection services, IConfiguration congig)
+    public static IServiceCollection  AddIdentityService(this IServiceCollection services, IConfiguration congig)
     {
         // Specify the Identity behaviour
         services.AddIdentity<AppUser, AppRole>(options =>

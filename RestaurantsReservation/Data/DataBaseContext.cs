@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RestaurantsReservation.Models;
-using System.ComponentModel;
 
 namespace RestaurantsReservation.Data;
 

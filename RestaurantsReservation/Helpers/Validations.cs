@@ -1,10 +1,17 @@
-﻿using RestaurantsReservation.Models;
-using System.Text.RegularExpressions;
-
-namespace RestaurantsReservation.Helpers;
-
+﻿namespace RestaurantsReservation.Helpers;
+/// <summary>
+/// Custom Validation.
+/// </summary>
 internal static class Validations
 {
+
+    /// <summary>
+    /// Check if the given string date is valid format.
+    /// </summary>
+    /// <param name="dateString"></param>
+    /// <param name="isValid"></param>
+    /// <param name="date"></param>
+    /// <returns>bool(isValid) + DateOnly(date)</returns>
     public static void IsValidDate(string dateString, out bool isValid, out DateOnly date)
     {
         DateOnly dateTime = DateOnly.FromDateTime(DateTime.UtcNow);
@@ -14,6 +21,13 @@ internal static class Validations
         isValid = isValidDate;
 
     }
+    /// <summary>
+    /// Check if the given string time is valid format.
+    /// </summary>
+    /// <param name="timeString"></param>
+    /// <param name="isValid"></param>
+    /// <param name="time"></param>
+    /// <returns>bool(isValid) + TimeOnly(time)</returns>
     public static void IsValidTime(string timeString, out bool isValid, out TimeOnly time)
     {
         TimeOnly returnedTime = TimeOnly.FromDateTime(DateTime.UtcNow);
@@ -22,56 +36,6 @@ internal static class Validations
         time = returnedTime;
         isValid = isValidTime;
     }
-    // Method to validate email address using regular expression
-    public static bool IsValidEmail(string email)
-    {
-        string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-        Regex regex = new Regex(emailPattern);
-        return regex.IsMatch(email);
-    }
 
-    public static bool IsOldDate(ReservationSchedule reservationSchedule)
-    {
-        DateOnly todayDate = DateOnly.FromDateTime(DateTime.UtcNow);
-        TimeOnly todayTime = TimeOnly.FromDateTime(DateTime.UtcNow);
-
-        var currentReservationDate = DateOnly.Parse(reservationSchedule.ReservationDate);
-        var currentStartAt = TimeOnly.Parse(reservationSchedule.StartAt);
-        if (currentReservationDate < todayDate) return true;
-
-        else if (currentReservationDate == todayDate && currentStartAt < todayTime) return true;
-
-        return false;
-    }
-
-    public static bool IsValidReservation(ReservationSchedule reservationSchedule, string newReservationDate, string newStartAt, string newEndAt)
-    {
-
-        var currentReservationDate = DateOnly.Parse(reservationSchedule.ReservationDate);
-        var currentStartAt = TimeOnly.Parse(reservationSchedule.StartAt);
-        var currentEndAt = TimeOnly.Parse(reservationSchedule.EndAt);
-
-        var newReseDate = DateOnly.Parse(newReservationDate);
-        var newResStartAt = TimeOnly.Parse(newStartAt);
-        var newResEndAt = TimeOnly.Parse(newEndAt);
-
-        if (currentReservationDate == newReseDate)
-        {
-            if ((newResStartAt < currentStartAt && newResEndAt <= currentStartAt) || (newResStartAt >= currentEndAt && newResEndAt > currentEndAt)) return true;
-        }
-        return true;
-
-    }
-
-    public static bool CanCancel(ReservationSchedule reservation)
-    {
-        DateOnly todayDate = DateOnly.FromDateTime(DateTime.UtcNow);
-        TimeOnly todayTime = TimeOnly.FromDateTime(DateTime.UtcNow);
-        var reservationDate = DateOnly.Parse(reservation.ReservationDate);
-        var startAt = TimeOnly.Parse(reservation.StartAt);
-        if (todayDate == reservationDate && startAt < todayTime.AddHours(2))
-            return false;
-        return true;
-    }
 
 }

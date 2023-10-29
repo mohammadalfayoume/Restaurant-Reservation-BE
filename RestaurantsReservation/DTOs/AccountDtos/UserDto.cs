@@ -1,4 +1,4 @@
-﻿namespace RestaurantsReservation.DTOs.AccountDto;
+﻿namespace RestaurantsReservation.DTOs.AccountDtos;
 
 public class UserDto
 {
