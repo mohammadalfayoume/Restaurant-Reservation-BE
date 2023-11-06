@@ -18,7 +18,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<ITokenRepository, TokenRepository>();
         services.AddScoped<IRestaurantRepository, RestaurantRepository>();
         services.AddScoped<IRestaurantTableRepository, RestaurantTableRepository>();
-        services.AddScoped<IRestaurantTableTypeRepository, RestaurantTableTypeRepository>();
+        //services.AddScoped<IRestaurantTableTypeRepository, RestaurantTableTypeRepository>();
         services.AddScoped<IReservationRepository, ReservationRepository>();
         services.AddCors();
 

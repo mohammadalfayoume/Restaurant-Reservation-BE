@@ -1,6 +1,4 @@
-﻿using RestaurantsReservation.Models;
-
-namespace RestaurantsReservation.DTOs.ReservationDtos;
+﻿namespace RestaurantsReservation.DTOs.ReservationDtos;
 
 public class ReservationCreateDto
 {

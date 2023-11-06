@@ -6,8 +6,6 @@ using RestaurantsReservation.DTOs.ReservationDtos;
 using RestaurantsReservation.DTOs.UserDtos;
 using RestaurantsReservation.Interfaces;
 using RestaurantsReservation.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using RestaurantsReservation.Helpers;
 
@@ -36,7 +34,8 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AppUserDto>>> GetUsers()
     {
-        return Ok(await _userRepo.GetDtoUsersAsync());
+        var users = await _userRepo.GetAllAsync();
+        return Ok(users);
     }
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]

@@ -3,7 +3,6 @@ using RestaurantsReservation.DTOs.AccountDtos;
 using RestaurantsReservation.DTOs.ReservationDtos;
 using RestaurantsReservation.DTOs.RestaurantDtos;
 using RestaurantsReservation.DTOs.RestaurantTableDtos;
-using RestaurantsReservation.DTOs.RestaurantTableTypeDtos;
 using RestaurantsReservation.DTOs.UserDtos;
 using RestaurantsReservation.Models;
 
@@ -18,7 +17,6 @@ public class AutoMaperProfiles : Profile
         CreateMap<UpdateUserDto, AppUser>();
         CreateMap<RestaurantUpdateDto, Restaurant>();
         CreateMap<RestaurantTableUpdateDto, RestaurantTable>();
-        CreateMap<RestaurantTableTypeUpdateDto, RestaurantTableType>();
         CreateMap<ReservationUpdateDto, ReservationSchedule>();
 
 
@@ -26,7 +24,6 @@ public class AutoMaperProfiles : Profile
         CreateMap<RegisterDto, AppUser>();
         CreateMap<RestaurantCreateDto, Restaurant>();
         CreateMap<RestaurantTableCreateDto, RestaurantTable>();
-        CreateMap<RestaurantTableTypeCreateDto, RestaurantTableType>();
         CreateMap<ReservationCreateDto, ReservationSchedule>();
 
 
@@ -34,7 +31,6 @@ public class AutoMaperProfiles : Profile
         CreateMap<AppUser, AppUserDto>();
         CreateMap<Restaurant, RestaurantDto>();
         CreateMap<RestaurantTable, RestaurantTableDto>();
-        CreateMap<RestaurantTableType, RestaurantTableTypeDto>();
         CreateMap<ReservationSchedule, ReservationDto>();
 
 
@@ -42,7 +38,6 @@ public class AutoMaperProfiles : Profile
         CreateMap<AppUser, UserPlanDto>();
         CreateMap<Restaurant, RestaurantPlanDto>();
         CreateMap<RestaurantTable, RestaurnatTablePlanDto>();
-        CreateMap<RestaurantTableType, RestaurantTableTypePlanDto>();
         CreateMap<ReservationSchedule, ReservationPlanDto>();
     }
 }

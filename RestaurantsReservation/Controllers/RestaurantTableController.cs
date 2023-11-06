@@ -56,14 +56,23 @@ public class RestaurantTableController : ControllerBase
     public async Task<ActionResult<RestaurantTableDto>> CreateRestaurantTable(RestaurantTableCreateDto restaurantTableDto)
     {
         var username = GetUserName();
+        bool flag = false;
+        if (restaurantTableDto.RestaurantTableType.ToLower() == "indoor" 
+            || restaurantTableDto.RestaurantTableType.ToLower() == "outdoor")
+            flag = true;
+
+        if (!flag) return BadRequest();  
+
+        if (restaurantTableDto.RestaurantTableType.ToLower() == "indoor")
+            restaurantTableDto.RestaurantTableType = "Indoor";
+        else
+            restaurantTableDto.RestaurantTableType = "Outdoor";
 
         var restaurantTable = _mapper.Map<RestaurantTable>(restaurantTableDto);
-
         restaurantTable.CreatedBy = username;
-
         await _restaurantTableRepo.CreateAsync(restaurantTable);
 
-        var restaurantTableToReturn= _mapper.Map<RestaurantTableDto>(restaurantTable);
+        var restaurantTableToReturn = _mapper.Map<RestaurantTableDto>(restaurantTable);
 
         return Created($"/api/restaurantTables/{restaurantTable.Id}", restaurantTableToReturn);
     }

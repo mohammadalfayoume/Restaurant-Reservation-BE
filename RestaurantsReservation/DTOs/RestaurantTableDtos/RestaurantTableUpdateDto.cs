@@ -2,6 +2,7 @@
 
 public class RestaurantTableUpdateDto
 {
+    public string? RestaurantTableType { get; set; }
     public int SeatingCapacity { get; set; }
     public int TableNumber { get; set; }
     public decimal Price { get; set; }

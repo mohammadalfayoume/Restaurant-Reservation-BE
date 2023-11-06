@@ -1,11 +1,8 @@
-﻿using RestaurantsReservation.DTOs.RestaurantDtos;
-using RestaurantsReservation.DTOs.RestaurantTableTypeDtos;
-using RestaurantsReservation.Models;
-
-namespace RestaurantsReservation.DTOs.RestaurantTableDtos;
+﻿namespace RestaurantsReservation.DTOs.RestaurantTableDtos;
 
 public class RestaurnatTablePlanDto
 {
+    public string? RestaurantTableType { get; set; }
     public int Id { get; set; }
     public int SeatingCapacity { get; set; }
     public int TableNumber { get; set; }

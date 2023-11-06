@@ -15,7 +15,7 @@ public class RestaurantTableRepository : IRestaurantTableRepository
     }
     private IQueryable<RestaurantTable> GetRestaurantTables()
     {
-        return _context.RestaurantTables.Include(rt=>rt.RestaurantTableType).Include(rt=>rt.Reservations).Include(rt=>rt.Restaurant).AsQueryable();
+        return _context.RestaurantTables.Include(rt=>rt.Reservations).Include(rt=>rt.Restaurant).AsQueryable();
     }
     public async Task CreateAsync(RestaurantTable restaurantTable)
     {

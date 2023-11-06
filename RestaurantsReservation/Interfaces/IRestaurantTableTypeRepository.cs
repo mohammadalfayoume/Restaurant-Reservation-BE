@@ -1,7 +1,7 @@
-﻿using RestaurantsReservation.Models;
+﻿//using RestaurantsReservation.Models;
 
-namespace RestaurantsReservation.Interfaces;
+//namespace RestaurantsReservation.Interfaces;
 
-public interface IRestaurantTableTypeRepository : IBaseRepository<RestaurantTableType>
-{
-}
+//public interface IRestaurantTableTypeRepository : IBaseRepository<RestaurantTableType>
+//{
+//}
