@@ -28,16 +28,16 @@ public class UserRepository : IUserRepository
     }
     public async Task<AppUserDto?> GetDtoUserByIdAsync(int id)
     {
-        return await GetDtoUsers().FirstOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
+        return await GetDtoUsers().FirstOrDefaultAsync(u => u.Id == id);
     }
     public async Task<AppUser?> GetByIdAsync(int id)
     {
-        return await GetUsers().FirstOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
+        return await GetUsers().FirstOrDefaultAsync(u => u.Id == id);
     }
 
     public async Task<IEnumerable<AppUserDto>> GetDtoUsersAsync()
     {
-        return await GetDtoUsers().AsNoTracking().Where(u => u.IsDeleted == false).ToListAsync();
+        return await GetDtoUsers().AsNoTracking().ToListAsync();
     }
 
     public async Task UpdateAsync(AppUser user)

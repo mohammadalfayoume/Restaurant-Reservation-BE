@@ -22,6 +22,8 @@ namespace RestaurantsReservation.Data.Config
                 .WithMany(r => r.Tables)
                 .HasForeignKey(t => t.RestaurantId)
                 .IsRequired(false);
+
+            builder.HasQueryFilter(x => x.IsDeleted == false);
         }
     }
 }

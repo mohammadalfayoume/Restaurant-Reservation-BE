@@ -25,12 +25,12 @@ public class RestaurantTableRepository : IRestaurantTableRepository
 
     public async Task<RestaurantTable?> GetByIdAsync(int id)
     {
-        return await GetRestaurantTables().FirstOrDefaultAsync(rt => rt.Id == id && !rt.IsDeleted);
+        return await GetRestaurantTables().FirstOrDefaultAsync(rt => rt.Id == id);
     }
 
     public async Task<IEnumerable<RestaurantTable>> GetAllAsync()
     {
-        return await GetRestaurantTables().AsNoTracking().Where(res => res.IsDeleted == false).ToListAsync();
+        return await GetRestaurantTables().AsNoTracking().ToListAsync();
     }
 
     public async Task UpdateAsync(RestaurantTable restaurantTable)
@@ -41,6 +41,6 @@ public class RestaurantTableRepository : IRestaurantTableRepository
 
     public async Task<IEnumerable<RestaurantTable>> GetRestaurantTablesAsync(int id)
     {
-        return await GetRestaurantTables().AsNoTracking().Where(rt=>!rt.IsDeleted && rt.Restaurant != null && rt.Restaurant.Id == id && !rt.Restaurant.IsDeleted).ToListAsync();
+        return await GetRestaurantTables().AsNoTracking().Where(rt=> rt.Restaurant != null && rt.Restaurant.Id == id).ToListAsync();
     }
 }

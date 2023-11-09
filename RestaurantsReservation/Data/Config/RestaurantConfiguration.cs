@@ -17,6 +17,7 @@ namespace RestaurantsReservation.Data.Config
             builder.Property(r => r.CloseAt).HasColumnType("nvarchar(50)").IsRequired();
             builder.Property(r => r.Region).HasColumnType("nvarchar(50)").IsRequired();
             builder.Property(r => r.Rating).IsRequired();
+            builder.HasQueryFilter(x => x.IsDeleted == false);
         }
     }
 }

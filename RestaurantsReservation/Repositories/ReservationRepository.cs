@@ -25,12 +25,12 @@ namespace RestaurantsReservation.Repositories
 
         public async Task<IEnumerable<ReservationSchedule>> GetAllAsync()
         {
-            return await GetReservations().AsNoTracking().Where(res => res.IsDeleted == false).ToListAsync();
+            return await GetReservations().AsNoTracking().ToListAsync();
         }
 
         public async Task<ReservationSchedule> GetByIdAsync(int id)
         {
-            return await GetReservations().FirstOrDefaultAsync(r => r.Id == id && r.IsDeleted == false);
+            return await GetReservations().FirstOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task UpdateAsync(ReservationSchedule reservation)
@@ -41,12 +41,12 @@ namespace RestaurantsReservation.Repositories
 
         public async Task<IEnumerable<ReservationSchedule>> GetUserReservationsAsync(int userId)
         {
-            return await GetReservations().AsNoTracking().Where(res=>res.IsDeleted==false && res.User != null && res.User.Id==userId && res.User.IsDeleted==false).ToListAsync();
+            return await GetReservations().AsNoTracking().Where(res=> res.User != null && res.User.Id==userId).ToListAsync();
         }
 
         public async Task<IEnumerable<ReservationSchedule>> GetTableReservationsAsync(int tableId)
         {
-            return await GetReservations().AsNoTracking().Where(res => res.IsDeleted == false && res.RestaurantTable != null && res.RestaurantTable.Id == tableId && res.RestaurantTable.IsDeleted == false).ToListAsync();
+            return await GetReservations().AsNoTracking().Where(res => res.RestaurantTable != null && res.RestaurantTable.Id == tableId).ToListAsync();
         }
     }
 }
